@@ -2,9 +2,10 @@ from PIL import Image
 import math
 
 #variables
-w = int(753 / 2)
-h = int(439 / 2)
-c_divide
+w = int(96 / 2)
+h = int(96 / 2)
+
+c_divide = 1
 n = 10000
 funct_num = 1
 
@@ -24,7 +25,7 @@ color_index = []
 
 
 #im Setup - Access image and get set RGB mode
-im = Image.open("/Users/Approximately_Equal/Desktop/image copy.png", 'r')
+im = Image.open("/Users/chance/Desktop/Niko_Speaking.png", 'r')
 pix = im.load()
 img = im.convert('RGB') 
 
@@ -59,14 +60,12 @@ for x in range(len(color_values)):
     
 print("w = " + str(w))
 print("h = " + str(h))
-print("# colors = " + str(len(red))
-print()
+print("# colors = " + str(len(red)))
 print()
 print()
 print("r_{ed} = " + str(red))
 print()
 print("g_{reen} = " + str(green))
-print()
 print()
 print("b_{lue} = " + str(blue))
 print()
@@ -86,34 +85,26 @@ index_list_final = [color_index[i:i + n] for i in range(0, len(color_index), n)]
 
 #Prints each list seperately and adds the needed Desmos syntax
 for x in range(math.ceil(len(color_index) / n)):
-    print()
-    print()
     print("l_{" + str(x + funct_num) + "} = " + str(index_list_final[x]))
-
-
-print()
-print()
-print()
-print()
+    print()
+    print()
 
 
 #Desmos syntax for the proper functions (Color and Dot matrix)
 for x in range(math.ceil(len(color_index) / n)):
+      
     print(r"c_{olor" + str(x + funct_num) + r"} = \operatorname{rgb}\left(r_{ed}\left[l_{"  + 
           str(x + funct_num) + r"}\right], " + "g_{reen}\left[l_{" + str(x + funct_num) + 
           r"}\right],\ b_{lue}\left[l_{" + str(x + funct_num) + r"}\right]\right)")
+      
     print()
+      
     print(r"P_{" + str(x + funct_num) + r"} = \left[\left(\operatorname{mod}\left(i_{" + str(x + funct_num) + 
           r"},\ w\right) - \frac{w-1}{2}, \frac{h-1}{2} - \operatorname{floor}\left(\frac{i_{" + 
           str(x + funct_num) + r"}}{w}\right)\right) \operatorname{for}\ i_{" + str(x + funct_num) + 
-          r"} = \left[" + str(n * x) + r"..." + str(n * (x + funct_num) - 1) + r"\right]\right]")
-    print()
-
+          r"} = \left[" + str(n * x) + r"..." + str(min((n * (x + 1) - 1), ((w * h) - 1))) + r"\right]\right]")
     
-print()
-print()
-print()
-print()
+    print()
 
 
 #Desmos syntax for the proper functions (Actual Cells)
@@ -129,4 +120,5 @@ for x in range(math.ceil(len(color_index) / n)):
           r"}.y\left[c_{" + str(x + funct_num) + r"}\right] - \frac{1}{2}\right) \right) \operatorname{for} c_{" + 
           str(x + funct_num) + r"} = \left[1...\operatorname{length}\left(P_{" + str(x + funct_num) + 
           r"}\right)\right]\right]")
+      
     print()
