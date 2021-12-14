@@ -1,0 +1,125 @@
+from PIL import Image
+import colorsys
+import math
+
+#variables
+w = 400
+h = 400
+
+c_divide = 1
+n = 10000
+funct_num = 1
+
+#counters
+count_1 = 0
+count_2 = 0
+count_3 = 0
+
+#lists
+red = []
+green = []
+blue = []
+
+pixel_values = []
+color_values = []
+hsv_values = []
+color_index = []
+
+
+#im Setup - Access image and get set RGB mode
+im = Image.open("/Users/chance/Desktop/rossdraws-rossdraws-123123412.jpeg", 'r')
+pix = im.load()
+img = im.convert('RGB') 
+
+
+#Gets rgb values from each pixel in grid (w, h)
+for y in range (h):
+    for x in range(w):
+        x_pixel = (im.size[0] / w) * x + im.size[0] / (w * 2)
+        y_pixel = (im.size[1] / h) * y + im.size[1] / (h * 2)
+        pixel_values.append(img.getpixel((x_pixel, y_pixel)))
+
+        
+
+for x in range (w * h):
+    hsv = colorsys.rgb_to_hsv(pixel_values[x][0] / float(255), pixel_values[x][1] / float(255), pixel_values[x][2] / float(255))
+    pixel_values[x] = [round(360 * hsv[0], 0), round(hsv[1], 1), round(hsv[2], 1)]
+        
+#Get list of all colors in image
+for x in range (w * h):
+    if (color_values.count(pixel_values[x]) == 0):
+        color_values.append(pixel_values[x])
+        count_1 = count_1 + 1
+
+        
+#Seperates the red, green, and blue values of the colors
+for x in range(len(color_values)):
+    red.append(color_values[x][0])
+    green.append(color_values[x][1])
+    blue.append(color_values[x][2])
+
+    
+print("w = " + str(w))
+print("h = " + str(h))
+print("# colors = " + str(len(red)))
+print()
+print()
+print("r_{ed} = " + str(red))
+print()
+print("g_{reen} = " + str(green))
+print()
+print("b_{lue} = " + str(blue))
+print()
+print()
+
+
+#Finds which pixels are each of the colors found in the im
+for x in range(w * h):
+    for x1 in range (len(color_values)):
+        if (pixel_values[x] == color_values[x1]):
+            color_index.append(x1 + 1)
+            
+
+#Seperate lists in case pixels exceed Desmos list limits
+index_list_final = [color_index[i:i + n] for i in range(0, len(color_index), n)]
+
+
+#Prints each list seperately and adds the needed Desmos syntax
+for x in range(math.ceil(len(color_index) / n)):
+    print("l_{" + str(x + funct_num) + "} = " + str(index_list_final[x]))
+    print()
+    print()
+
+
+#Desmos syntax for the proper functions (Color and Dot matrix)
+for x in range(math.ceil(len(color_index) / n)):
+      
+    print(r"c_{olor" + str(x + funct_num) + r"} = \operatorname{rgb}\left(r_{ed}\left[l_{"  + 
+          str(x + funct_num) + r"}\right], " + "g_{reen}\left[l_{" + str(x + funct_num) + 
+          r"}\right],\ b_{lue}\left[l_{" + str(x + funct_num) + r"}\right]\right)")
+      
+    print()
+      
+    print(r"P_{" + str(x + funct_num) + r"} = \left[\left(\operatorname{mod}\left(i_{" + str(x + funct_num) + 
+          r"},\ w\right) - \frac{w-1}{2}, \frac{h-1}{2} - \operatorname{floor}\left(\frac{i_{" + 
+          str(x + funct_num) + r"}}{w}\right)\right) \operatorname{for}\ i_{" + str(x + funct_num) + 
+          r"} = \left[" + str(n * x) + r"..." + str(min((n * (x + 1) - 1), ((w * h) - 1))) + r"\right]\right]")
+    
+    print()
+
+
+#Desmos syntax for the proper functions (Actual Cells)
+for x in range(math.ceil(len(color_index) / n)):
+    print("\left[\operatorname{polygon}\left(\left(P_{" + str(x + funct_num) + r"}.x\left[c_{" + str(x + funct_num) + 
+          r"}\right] - \frac{1}{2} , P_{" + str(x + funct_num) + r"}.y\left[c_{" + str(x + funct_num) + 
+          r"}\right] - \frac{1}{2}\right), \left(P_{" + str(x + funct_num) + r"}.x\left[c_{" + 
+          str(x + funct_num) + r"}\right] - \frac{1}{2}, P_{" + str(x + funct_num) + r"}.y\left[c_{" + 
+          str(x + funct_num) + r"}\right] + \frac{1}{2}\right), \left(P_{" + str(x + funct_num) + 
+          r"}.x\left[c_{" + str(x + funct_num) + r"}\right] + \frac{1}{2} , P_{" + str(x + funct_num) + 
+          r"}.y\left[c_{" + str(x + funct_num) + r"}\right] + \frac{1}{2}\right), \left(P_{" + str(x + funct_num) + 
+          r"}.x\left[c_{" + str(x + funct_num) + r"}\right]\ + \frac{1}{2} , P_{" + str(x + funct_num) + 
+          r"}.y\left[c_{" + str(x + funct_num) + r"}\right] - \frac{1}{2}\right) \right) \operatorname{for} c_{" + 
+          str(x + funct_num) + r"} = \left[1...\operatorname{length}\left(P_{" + str(x + funct_num) + 
+          r"}\right)\right]\right]")
+      
+    print()
