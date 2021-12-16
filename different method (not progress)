@@ -1,0 +1,27 @@
+from PIL import Image
+import math
+
+#lists
+red = []
+green = []
+blue = []
+
+color_values = []
+color_index = []
+
+
+# access image / load the image / set color values to RGB
+im = Image.open("/Users/chance/Desktop/1319209973.jpeg", 'r')
+pix = im.load()
+img = im.convert('RGB') 
+
+# get the rgb values for every pixel in the image
+pixel_rgb = [img.getpixel((i % im.size[0], math.floor(i / im.size[1]))) for i in range (im.size[0] * im.size[1])]
+
+# get the pixels that have each 
+red = [[x for x in range(im.size[0] * im.size[1]) if pixel_rgb[x][0] == lum] for lum in range (255)]
+
+for x in range (255):
+    print(red[x])
+    print()
+    print()
