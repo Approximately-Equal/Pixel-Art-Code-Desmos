@@ -1,0 +1,51 @@
+from PIL import Image
+import math
+
+pixel_values = []
+rgb_values = []
+
+red = []
+green = []
+blue = []
+
+#Image Setup - Load image and get pixel data
+im = Image.open('/Users/chance/Desktop/Bridge 1.jpg', 'r')
+pix = im.load()
+img = im.convert('RGB')
+print("setup complete")
+
+#Gets rgb values from each pixel in image
+def get_pixel_values():
+    for y in range (im.size[1]):
+        for x in range(im.size[0]):
+            pixel_values.append(img.getpixel((x, y)))
+    print("pixel data collected")
+
+#Finds all unique colors in the image
+def unique_rgb_values():
+    for x in pixel_values:
+        if x not in rgb_values:
+            rgb_values.append(x)
+    print("unqiue colors found")
+
+# Seperates the unique colors into their red, green, and blue components
+def seperate_unique_rgb_values():
+    for x in rgb_values:
+        red.append(x[0])
+        green.append(x[1])
+        blue.append(x[2])
+        print("rgb values seperated")
+
+# Finds the color index of each pixels in rgb_values
+def pixel_match():
+    for x in pixel_values:
+        
+        
+        for x1 in range (len(color_values)):
+            if (pixel_values[x] == color_values[x1]):
+                color_index.append(x1 + 1)
+
+
+    
+
+
